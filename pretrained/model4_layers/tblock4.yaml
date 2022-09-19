@@ -1,0 +1,181 @@
+# ========== LOGGER OPTIONS ==========
+
+visualise_iter: 1000            # How often do you want to display output images during training
+validation_iter: 5000
+snapshot_save_iter: 5000     # How often do you want to save trained models
+log_iter: 20                  # How often do you want to log the training stats
+opt_level: O0
+use_apex: True
+
+trainer: TrainerSIMPLI
+augmentations:
+  same_on_batch: True
+  augs_mix:
+    -
+      kornia_aug: RandomMixUp
+      p: 0.9
+      lambda_val: [0, 0.3]
+
+
+clip_grad_norm: 20
+max_iter: &max_iter 1000000             # maximum number of training iterations
+seed: 420
+patch_size: 128
+
+weights:
+  generator:
+    l1: 1.
+    perceptual: 10.
+    intermediate_loss_0_l1: 1.
+    intermediate_loss_1_l1: 1.
+    intermediate_loss_2_l1: 1.
+    intermediate_loss_3_l1: 1.
+    smooth_layers: 0.01
+
+
+# ========== MODEL OPTIONS ==========
+
+
+models:
+  gen:
+    architecture: GeneratorSIMPLI
+    optimizer_group: generator
+    multi_reference_cams: False
+    rgb_inter_errors: True
+    max_depth: 100
+    min_depth: 1
+    use_intersected_groups: True
+    num_layers: &num_layers 4
+    scale_feat_extractor: 1
+    scale_lvl0: 0.25
+    scale_lvl1: 0.5
+    scale_lvl2: 1
+    lvl2_error_with_image: True
+    lvl3_error_with_image: True
+    lvl4_error_with_image: True
+    modules:
+      features_extractor:
+        architecture: SuperPointsFeatExtractor
+        half_size_output: True
+        input_dim: 3
+        output_dim: 9 # 15
+        norm: 'ln'
+        activation: 'elu'
+
+      sampi_block_lvl0:
+        architecture: TBlock
+        num_surfaces: 41
+        input_size: 12
+        input_surfaces_feats_size: 12
+        output_surfaces_feats_size: 12
+        agg_with_mean_var: True
+        post_aggregate_block_conv_dim: 3
+        post_aggregate_block_dims: [ [ 32, 32 ], [ 32, 32 ], [ 32, 32 ], [32, 16], [16, 16], [16, 16] ]
+      alpha_decoder_lvl0:
+        architecture: ConvMLP
+        input_dim: 12
+        dims: [ 12, 12 ]
+        output_dim: 1
+        activation: 'elu'
+
+      sampi_block_lvl1:
+        architecture: TBlock
+        num_surfaces: 41
+        input_size: 12
+        input_surfaces_feats_size: 13
+        output_surfaces_feats_size: 16
+        agg_with_mean_var: True
+        post_aggregate_block_conv_dim: 2
+        post_aggregate_block_dims: [ [ 32, 32 ], [ 32, 16 ] ]
+        aggregation_with_weights: True
+      planes_deformer_lvl1:
+        architecture: AnchoredRayAttention
+        dim_input: 16
+        num_heads: 2
+        dim_hidden: 10
+        num_anchors: *num_layers
+      depth_decoder_lvl1:
+        architecture: ConvMLP
+        input_dim: 16
+        dims: [ 16, 8 ]
+        output_dim: 11 # num_surf // num_layers + 1
+        activation: 'relu'
+      rgba_decoder_lvl1:
+        architecture: ConvMLP
+        input_dim: 16
+        dims: [ 16, 8 ]
+        output_dim: 4
+        activation: 'relu'
+
+      samli_block_lvl2:
+        architecture: TBlock
+        num_surfaces: *num_layers
+        input_size: 6
+        input_surfaces_feats_size: 16
+        output_surfaces_feats_size: 16
+        agg_with_mean_var: True
+        post_aggregate_block_conv_dim: 2
+        post_aggregate_block_dims: [ [ 32, 32 ], [ 16, 16 ] ]
+        agg_processor_hidden_size: 16
+      rgba_decoder_lvl2:
+        architecture: ConvMLP
+        input_dim: 16
+        dims: [ 16, 8 ]
+        output_dim: 4
+        activation: 'relu'
+
+      samli_block_lvl3:
+        architecture: TBlock
+        num_surfaces: *num_layers
+        input_size: 6
+        input_surfaces_feats_size: 16
+        output_surfaces_feats_size: 16
+        agg_with_mean_var: True
+        post_aggregate_block_conv_dim: 2
+        post_aggregate_block_dims: [ [ 16, 16 ] ]
+        agg_processor_hidden_size: 16
+      rgba_decoder_lvl3:
+        architecture: ConvMLP
+        input_dim: 16
+        dims: [ 16, 8 ]
+        output_dim: 4
+        activation: 'relu'
+
+      samli_block_lvl4:
+        architecture: TBlock
+        num_surfaces: *num_layers
+        input_size: 6
+        input_surfaces_feats_size: 16
+        output_surfaces_feats_size: 16
+        agg_with_mean_var: True
+        post_aggregate_block_conv_dim: 2
+        post_aggregate_block_dims: [ [ 16, 16 ] ]
+        agg_processor_hidden_size: 16
+      rgba_decoder_lvl4:
+        architecture: ConvMLP
+        input_dim: 16
+        dims: [ 16, 8 ]
+        output_dim: 4
+        activation: 'relu'
+
+      rasterizer:
+        architecture: RasterizerFFrast
+        faces_per_pixel: 16
+        image_size: 256
+        scale: 120
+      shader:
+        architecture: MPIShader
+      composer:
+        architecture: ComposerStereoMagnification
+        black_background: False
+
+optimizers:
+  generator:
+    type: Adam
+    lr: 0.0003
+    betas: [0.9, 0.999]
+
+schedulers:
+  generator:
+    type: ExponentialLR
+    gamma: 0.999994

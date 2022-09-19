@@ -1,0 +1,12 @@
+.idea/
+**/.DS_Store/
+outputs/
+tensorboard/
+**/__pycache__/
+**/.ipynb_checkpoints/
+data/
+/outputs/
+tmp
+pretrained/*
+!pretrained/download.sh
+nvsdocker.sh
