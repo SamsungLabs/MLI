@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Multi-Layer Viewer</title>
+    <link rel="stylesheet" href="../viewer/viewer.css">
+
+    <script src="../viewer/threejs_bin.js"></script>
+    <script src="../viewer/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
+    <script src="https://mrdoob.github.io/stats.js/build/stats.min.js"></script>
+    <script src="../viewer/numjs.min.js"></script>
+    <script src="../viewer/utils.js"></script>
+    <script src="../viewer/camera_viewer.js"></script>
+    <script src="../viewer/materials.js"></script>
+    <script src="../viewer/viewer.js"></script>
+
+  </head>
+  <body>
+    <div class="container">
+
+      <div class="title" id="title">
+        <h1>Multi-Layer Viewer</h1>
+      </div>
+
+<div class="main_controls">
+      <div class="controls" style="padding-top: 20px;">
+        <div><p style="font-size: 13pt; line-height: 0.05">Movement mode:</p></div>
+        <div class="column_">
+             <button id="hoverButton">Hover</button>
+             <div style="width: 10px; height: 3px"></div>
+             <button id="dragButton">Drag</button>
+             <div style="width: 10px; height: 3px"></div>
+             <button id="swayButton">Sway</button>
+             <div style="width: 10px; height: 3px"></div>
+             <button id="wonderButton">Wonder</button>
+         </div>
+      </div>
+
+      <div class="controls" style="padding-top: 30px;">
+        <div><p style="font-size: 13pt; line-height: 0.05">View mode:</p></div>
+        <div class="column_">
+            <button id="magmaViewButton">Depth (Magma)</button>
+            <div style="width: 10px; height: 3px"></div>
+            <button id="rainbowViewButton">Depth (Rainbow)</button>
+            <div style="width: 10px; height: 3px"></div>
+            <button id="normalViewButton">Normal</button>
+        </div>
+      </div>
+
+</div>
+
+
+        <div class="main-viewer"  style="padding-left: 23%; margin-top: -29%;">
+           <div class="viewer-container">
+        <div id="scene-viewer" class="scene-lf">
+         <canvas id="viewer-canvas" class="viewer-canvas" width="350" height="512">
+            <param id="base-path" value="../scenes/3/">
+          <div id="display"></div>
+                 <script>
+                document.getElementById("display").innerHTML = startDisplay("../scenes/14/");
+              </script>
+
+         </canvas>
+        </div>
+      </div>
+      </div>
+
+    </div>
+
+  </body>
+</html>
