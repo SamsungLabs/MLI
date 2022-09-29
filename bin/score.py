@@ -11,7 +11,6 @@ from tqdm import tqdm
 import numpy as np
 
 from lib import trainers
-from lib.modules import FlowRAFT
 from lib.trainers.trainer_base import TrainerBase
 from lib.utils.base import seed_freeze
 from lib.utils.io import get_config
@@ -55,11 +54,6 @@ class Scorer:
 
         self.crop_size = crop_size
 
-        if len([x for x in self.metric_name_list if x.startswith('occlusion-')]):
-            assert raft_path, 'The path to the weight of the RAFT must be specified to use the occlusion scores.'
-            self.flow_raft = FlowRAFT(raft_path)
-            self.use_masked_occlusion = True
-
     @staticmethod
     def aggregate_metrics(computed_metrics) -> dict:
         res = {name: np.array([dic[name] for dic in computed_metrics])
@@ -97,21 +91,6 @@ class Scorer:
             out['batch_length'] = images_output.shape[0]
             return out
 
-        mask_occlusion = None
-        if self.use_masked_occlusion:
-            res_flow = torch.abs(self.flow_raft.get_flow_displacement(images_target, images_reference))
-            mask_occlusion = res_flow.gt(1).any(dim=1, keepdim=True)
-
-            occlusion_area = mask_occlusion.float().mean(dim=[-1, -2, -3])
-
-            occlusion_area_mask = ~(occlusion_area == 0)
-            images_target = images_target[occlusion_area_mask]
-            images_output = images_output[occlusion_area_mask]
-            mask = mask[occlusion_area_mask] if mask is not None else None
-            mask_occlusion = mask_occlusion[occlusion_area_mask]
-
-            out['occlusion_area'] = occlusion_area.mean().item()
-
         if images_output.shape[0] == 0:
             out['batch_length'] = images_output.shape[0]
             return out
@@ -123,8 +102,6 @@ class Scorer:
                 continue
             if name.startswith('masked-') and mask is not None:
                 mask_for_score = mask
-            elif name.find('occlusion') != -1 and mask_occlusion is not None:
-                mask_for_score = mask_occlusion
             else:
                 mask_for_score = None
 
