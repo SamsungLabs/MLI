@@ -230,10 +230,14 @@
 
 
 
-<iframe src="host_scene.html" width="100%" height="1200"   style="display:none" allowfullscreen>  </iframe>
+<!--<iframe src="host_scene.html" width="100%" height="1200"   style="display:none" allowfullscreen>  </iframe>-->
 <script>
 if (window.innerWidth > 600) {
-document.getElementsByTagName('iframe')[0].style.display = 'block'
+var iframe = document.createElement('iframe');
+iframe.src = 'host_scene.html'
+iframe.width = '100%'
+iframe.height = '1250'
+document.getElementById('section_delete').appendChild(iframe)
 }
 </script>
 
