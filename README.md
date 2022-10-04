@@ -1,6 +1,17 @@
-# Self-improving Multiplane-to-layer Images for Novel View Synthesis
+# SIMPLI -  Self-improving Multiplane-to-layer Images for Novel View Synthesis
 ------------
+  <p align="center">
+  <br>
+<a href='https://colab.research.google.com/drive/1EwLRJIzUdGPNNrIxp-JX_4uX6dKxORnI?usp=sharing' style='padding-left: 0.5rem;'><img src='https://colab.research.google.com/assets/colab-badge.svg' alt='Google Colab'></a>
+  </br>
+ <h2 align="center">WACV 2023</h2>
+  <div align="center">
+    <img src="./docs/static/images/cover.gif" alt="Logo" width="100%">
+  </div>
 
+We suggest to use collab to run our inference code.
+To see the resulted geometry use viewer incorporated into the notebook.
+We demonstrate results at our [project page](https://samsunglabs.github.io/MLI/).
 
 ## Build docker image
 After downloading the repository, use `docker/Dockerfile` to create an image that sets up all dependencies.

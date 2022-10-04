@@ -171,17 +171,6 @@
     </div>
   </section>
 
-$(document).ready(function() {
-this.controls.updatePanning = () => {
-  const minWidth = 550 // Your min breakpoint for enabling pan.
-  if (window.innerWidth >= minWidth ) {
-    this.controls.enablePan = true
-  } else {
-    this.controls.enablePan = false
-  }
-}
-}
-
 
  <section class="hero is-small">
       <div class="is-centered">
@@ -246,6 +235,18 @@ this.controls.updatePanning = () => {
   </section>
 
   <section class="section" id="section_delete">
+       <script>
+      $(document).ready(function() {
+      this.controls.updatePanning = () => {
+        const minWidth = 550
+        if (window.innerWidth >= minWidth ) {
+          this.controls.enablePan = true
+        } else {
+          this.controls.enablePan = false
+        }
+        }
+      });
+ </script>
 
     <div class="hero-body">
     <div class="container">
