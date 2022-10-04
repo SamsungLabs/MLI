@@ -49,7 +49,7 @@
   <link rel="stylesheet" href="static/css/bulma-slider.min.css">
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="static/css/index.css">
 
   <!-- Bootstrap core JavaScript -->
   <script src="static/vendor/bulma-carousel.min.js"></script>
@@ -86,11 +86,11 @@
                Pavel Solovev</a><sup>1</sup>,
           </span>
           <span class="author-block">
-            <a href="https://khakhulin@github.io"  style="text-decoration : none; color : #000000;">
+            <a href="khakhulin@github.io"  style="text-decoration : none; color : #000000;">
               Taras Khakhulin</a><sup>1,2</sup>,</span>
           <span class="author-block">
             <a href="https://scholar.google.com/citations?user=ypspak0AAAAJ" style="text-decoration : none; color : #000000;">
-               Denis Korzhenkov</a><sup>3</sup>
+               Denis Korzhenkov</a><sup>3</sup>,
             </span>
         </div>
 
@@ -99,7 +99,7 @@
         <div class="is-size-5 publication-authors">
           <span class="author-block"><sup>1</sup><a href="https://research.samsung.com/aicenter_moscow">Samsung AI Center</a></span><br>
           <span class="author-block"><sup>2</sup><a href="https://www.skoltech.ru/en/">Skolkovo Institute of Science and Technology</a></span><br>
-          <span class="author-block"><sup>3</sup><a href="">Yandex </a></span><br>
+          <span class="author-block"><sup>3</sup><a href="https://research.samsung.com/aicenter_moscow">Yandex </a></span><br>
         </div>
 
 
@@ -181,9 +181,10 @@
           <div class="content is-centered   has-text-centered ">
             <video poster="" id="tease" autoplay controls muted loop height="60%" width="60%">
               <source src="static/images/rgb_grid.mp4" type="video/mp4">
-            </video>          </div>
+            </video>
+          </div>
 
-        </div>
+    </div>
 
 <!--   </div>-->
  </section>
@@ -210,19 +211,21 @@
           </div>
 
           <div class="content has-text-justified">
-            <p class="lead mb-0" align="justify">
-              We present a new method for lightweight novel-view synthesis that generalizes to an arbitrary forward-facing scene.
-Recent approaches are computationally expensive, require per-scene optimization, or produce a memory-expensive representation.
-              e refer to the proposed model as Self-Improving MultiPlane-to-Layer Image, or just SIMPLI.
 
+            <p class="lead mb-0" align="justify">
+              Representing scenes with multiple semi-transparent colored layers has been a popular and successful choice for real-time novel view synthesis.
+              Existing approaches infer colors and transparency values over regularly-spaced layers of planar or spherical shape.
             </p>
             <p class="lead mb-0" align="justify">
-             We start by representing the scene with a set of fronto-parallel semitransparent planes and afterwards convert them to deformable layers in an end-to-end manner.
-              Additionally, we employ a feed-forward refinement procedure that corrects  the estimated representation by aggregating information from input views.
-              Our method does not require any fine-tuning when a new scene is processed and can handle an arbitrary number of views without any restrictions.
+              In this work, we introduce a new view synthesis approach based on multiple semi-transparent layers with scene-adapted geometry.
+              Our approach infers such representations from stereo pairs in two stages. The first stage infers the geometry of a small number of data-adaptive layers from a given pair of views.
+              The second stage infers the color and the transparency values for these layers producing the final representation for novel view synthesis.
+              Importantly, both stages are connected through a differentiable renderer, and are trained in an  end-to-end manner.
             </p>
             <p class="lead mb-0" align="justify">
-              Experimental results show that our approach surpasses recent models in terms of both common metrics and human evaluation, with the noticeable advantage in inference speed and compactness of the inferred layered geometry.
+
+              In the experiments, we demonstrate the advantage of the proposed approach over the use of regularly-spaced layers with no adaptation to scene geometry.
+              Despite being orders of magnitude faster during rendering, our approach also outperforms a recently proposed IBRNet system based on implicit geometry representation.
             </p>
 
         </div>
@@ -231,7 +234,7 @@ Recent approaches are computationally expensive, require per-scene optimization,
   </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="section_delete">
 
     <div class="hero-body">
     <div class="container">
@@ -275,21 +278,21 @@ Recent approaches are computationally expensive, require per-scene optimization,
 
 </section>
 
+<section class="section2" id="section2">
+    <div class="is-centered">
+      <div class="content  is-centered has-text-centered">
+      </div>
+          <div class="content is-centered   has-text-centered ">
+            <video  autoplay controls muted loop height="60%" width="60%">
+              <source src="static/images/depth_cmp.mp4" type="video/mp4">
+            </video>
+          </div>
+
+    </div>
+</section>
 
 
 
-
-
-
-
-  <section class="content">
-
-
-
-  </section>
-
-      
-    
 
 
 
@@ -320,13 +323,12 @@ Recent approaches are computationally expensive, require per-scene optimization,
         </div>
 
         <div class="content has-text-justified ">
-         <p>
-         Our work mostly inspired by the following works:
-         </p>
+        <!-- <p> -->
+        <!-- Our works mostly inspired by the following works: -->
+        <!-- </p> -->
         <p>
         <ul>
           <li><a href="https://tinghuiz.github.io/projects/mpi/"> Stereo Magnification: Learning View Synthesis using Multiplane Images </a> in SIGGRAPH 2018</li>
-          <li><a href="https://samsunglabs.github.io/StereoLayers/"> Stereo Magnification with Multi-Layer Images</a> in CVPR 2022</li>
           <li><a href="https://augmentedperception.github.io/deepviewvideo/"> Immersive Light Field Video with a Layered Mesh Representation</a> in SIGGRAPH 2020 </li>
           <li><a href="https://cseweb.ucsd.edu/~viscomp/projects/ECCV20Deep/"> Deep Multi Depth Panoramas for View Synthesis</a> in ECCV 2020 </li>
         </ul>
@@ -336,10 +338,10 @@ Recent approaches are computationally expensive, require per-scene optimization,
       </div>
     </div>
 
-    
+
   </section>
 
-  
+
 
   <section class="section" id="BibTeX">
     <div class="container content">
@@ -364,13 +366,9 @@ Recent approaches are computationally expensive, require per-scene optimization,
           <p class="footer-text mb-4 mb-lg-0"> Self-improving Multiplane-to-layer Images for Novel View Synthesis</p>
 
           <div class="columns">
-            <div class="content footer-text col-lg-6 h-90">
-              This website is based on <a href="https://nerfies.github.io">nerfies</a>
+            <div class="content footer-text col-lg-6 h-60">
+              This website is based on <a href="https://nerfies.github.io">nerfies</a> and our demo is developed with <a href="https://augmentedperception.github.io/deepviewvideo/">LightField video</a>.
             </div>
-            <div class="content footer-text col-lg-6 h-90">
-            Our demo is developed with <a href="https://augmentedperception.github.io/deepviewvideo/">LightField video</a>.
-            </div>
-
           </div>
           
         </div>

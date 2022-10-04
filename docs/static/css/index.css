@@ -201,3 +201,19 @@ body {
 #interpolation-image-wrapper img {
   border-radius: 5px;
 }
+
+@media screen and (min-width: 100px) and (max-width: 550px) {
+    #section_delete {
+        display: none;
+    }
+
+    .section2 {
+        visibility: visible;
+    }
+}
+
+@media screen and (min-width: 550px) {
+    .section2 {
+          visibility: hidden;
+    }
+}
