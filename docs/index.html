@@ -228,69 +228,14 @@
 
   <section class="section" id="section_delete">
 
-    <script src="viewer/threejs_bin.js"></script>
-    <script src="viewer/papaparse.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
-    <script src="https://mrdoob.github.io/stats.js/build/stats.min.js"></script>
-    <script src="viewer/numjs.min.js"></script>
-    <script src="viewer/utils.js"></script>
-    <script src="viewer/camera_viewer.js"></script>
-    <script src="viewer/materials.js"></script>
-    <script src="viewer/viewer.js"></script>
 
-       <script>
-      try{
-      $(document).ready(function() {
-      this.controls.updatePanning = () => {
-        const minWidth = 550
-        if (window.innerWidth >= minWidth ) {
-          this.controls.enablePan = true
-        } else {
-          this.controls.enablePan = false
-        }
-        }
-      });  } catch() {}
- </script>
 
-    <div class="hero-body">
-    <div class="container">
-
-      <div class="row is-centered">
-    <div class="offset-lg-1">
-     <div class="viewer-container" style="display: flex;">
-        <div id="scene-viewer" class="scene-lf">
-         <canvas id="viewer-canvas" class="viewer-canvas" width="256" height="256">
-            <param id="base-path" >
-          <div id="display-main"></div>
-
-                 <script>
-                document.getElementById("display-main").innerHTML = startMainDisplay("scenes/33/", "viewer-canvas");
-              </script>
-
-         </canvas>
-
-        </div>
-      </div>
-      </div>
-
-        <div class="offset-lg-1">
-          <div class="viewer-container" style="display: flex;">
-            <div id="scene-viewer2" class="scene-lf">
-             <canvas id="viewer-canvas2" class="viewer-canvas"  width="256" height="212">
-              <div id="display-main2"></div>
-                     <script>
-                    document.getElementById("display-main2").innerHTML = startMainDisplay("scenes/8/", "viewer-canvas2", "scene-viewer2");
-                  </script>
-
-             </canvas>
-              </div>
-          </div>
-        </div>
-
-      </div>
-
-      </div>
-      </div>
+<iframe src="host_scene.html" width="100%" height="1200"   style="display:none" allowfullscreen>  </iframe>
+<script>
+if (window.innerWidth > 600) {
+document.getElementsByTagName('iframe')[0].style.display = 'block'
+}
+</script>
 
 </section>
 <section class="section2" id="section2">
