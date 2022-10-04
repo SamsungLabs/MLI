@@ -227,7 +227,8 @@
   </section>
 
   <section class="section" id="section_delete">
-          <script src="viewer/threejs_bin.js"></script>
+
+    <script src="viewer/threejs_bin.js"></script>
     <script src="viewer/papaparse.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
     <script src="https://mrdoob.github.io/stats.js/build/stats.min.js"></script>
@@ -258,11 +259,13 @@
      <div class="viewer-container" style="display: flex;">
         <div id="scene-viewer" class="scene-lf">
          <canvas id="viewer-canvas" class="viewer-canvas" width="256" height="256">
-            <param id="base-path" value="scenes/3/">
+            <param id="base-path" >
           <div id="display-main"></div>
 
                  <script>
+                 try{
                 document.getElementById("display-main").innerHTML = startMainDisplay("scenes/33/", "viewer-canvas");
+               } catch() {}
               </script>
 
          </canvas>
@@ -274,10 +277,12 @@
         <div class="offset-lg-1">
           <div class="viewer-container" style="display: flex;">
             <div id="scene-viewer2" class="scene-lf">
-             <canvas id="viewer-canvas2" class="viewer-canvas"  width="256" height="256">
+             <canvas id="viewer-canvas2" class="viewer-canvas"  width="256" height="212">
               <div id="display-main2"></div>
                      <script>
+                          try{
                     document.getElementById("display-main2").innerHTML = startMainDisplay("scenes/8/", "viewer-canvas2", "scene-viewer2");
+                      } catch() {}
                   </script>
 
              </canvas>
