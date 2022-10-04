@@ -239,6 +239,7 @@
     <script src="viewer/viewer.js"></script>
 
        <script>
+      try{
       $(document).ready(function() {
       this.controls.updatePanning = () => {
         const minWidth = 550
@@ -248,7 +249,7 @@
           this.controls.enablePan = false
         }
         }
-      });
+      });  } catch() {}
  </script>
 
     <div class="hero-body">
