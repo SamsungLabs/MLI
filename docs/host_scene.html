@@ -1,4 +1,27 @@
+ <!-- Bootstrap core CSS -->
+  <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="static/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="static/css/landing-page.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="static/css/index.css">
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="static/vendor/bulma-carousel.min.js"></script>
+  <script src="static/vendor/jquery/jquery.min.js"></script>
+  <script src="static/vendor//bulma-slider.min.js"></script>
+  <script src="static/vendor/nerfies.js"></script>
 
     <script src="viewer/threejs_bin.js"></script>
     <script src="viewer/papaparse.min.js"></script>
@@ -13,10 +36,10 @@
     <div class="container">
 
       <div class="row is-centered">
-    <div class="offset-lg-1">
-     <div class="viewer-container" style="display: flex;">
+    <div class="offset-lg-0">
+     <div class="viewer-container" style="display: block;">
         <div id="scene-viewer" class="scene-lf">
-         <canvas id="viewer-canvas" class="viewer-canvas" width="256" height="256">
+         <canvas id="viewer-canvas" class="viewer-canvas" width="240%" height="256">
             <param id="base-path" >
           <div id="display-main"></div>
 
@@ -30,10 +53,10 @@
       </div>
       </div>
 
-        <div class="offset-lg-1">
+        <div class="offset-lg-2" >
           <div class="viewer-container" style="display: flex;">
             <div id="scene-viewer2" class="scene-lf">
-             <canvas id="viewer-canvas2" class="viewer-canvas"  width="256" height="212">
+             <canvas id="viewer-canvas2" class="viewer-canvas"  width="240px" height="256">
               <div id="display-main2"></div>
                      <script>
                     document.getElementById("display-main2").innerHTML = startMainDisplay("scenes/8/", "viewer-canvas2", "scene-viewer2");
