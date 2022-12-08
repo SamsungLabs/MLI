@@ -1,7 +1,7 @@
 //const baseUrl = "scenes/";
 //const num_layers = 4;
 //const layersIds = [...Array(num_layers).keys()].map(i => String(i).padStart(2, '0'))
-const depth_scale = 8;
+const depth_scale = 4;
 const stats = new Stats();
 
 function loadAllTextures(baseUrl, layersIds) {
