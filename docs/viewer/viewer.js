@@ -126,8 +126,8 @@ async function startDisplay(inputPath, num_layers=4) {
 //  const baseUrl = document.getElementById('base-path').value;
   const meta_data = await fetch(`${baseUrl}/meta.json`).then(result => result.json())
   const ref_camera = await ProjectiveCamera.from_meta(meta_data)
-  ref_camera.im_height = ref_camera.im_height / 2
-  ref_camera.im_width = ref_camera.im_width / 2
+  ref_camera.im_height = ref_camera.im_height / 16
+  ref_camera.im_width = ref_camera.im_width / 16
   const depths = await loadAllDepths(meta_data, baseUrl, layersIds)
   const [verts, faces, uv] = await tf_gen_planes(ref_camera.im_height, ref_camera.im_width)
   const faces_flat = faces.toInt().flatten().dataSync()
