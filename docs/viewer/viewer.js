@@ -87,7 +87,7 @@ function setupRenderer(canvas, camera, scene) {
 
 function buildGeometry(verts, faces_flat, uv_flat, depths, ref_camera) {
   // Depth must be reversed to match the uv parametrization
-  depths = tf.image.resizeBilinear(depths, [ref_camera.im_height, ref_camera.im_width])
+//   depths = tf.image.resizeBilinear(depths, [ref_camera.im_height, ref_camera.im_width])
   const rev_depth = tf.reverse(depths.reshape([ref_camera.im_height, ref_camera.im_width]), axis=0).reshape([-1, 1])
   const v3 = ref_camera.pixel_to_world(verts.reshape([-1, 2]), rev_depth).reshape([ref_camera.im_height, ref_camera.im_width, 3])
   const positions = v3.flatten().dataSync()
@@ -126,8 +126,8 @@ async function startDisplay(inputPath, num_layers=4) {
 //  const baseUrl = document.getElementById('base-path').value;
   const meta_data = await fetch(`${baseUrl}/meta.json`).then(result => result.json())
   const ref_camera = await ProjectiveCamera.from_meta(meta_data)
-  ref_camera.im_height = ref_camera.im_height / 16
-  ref_camera.im_width = ref_camera.im_width / 16
+//   ref_camera.im_height = ref_camera.im_height / 16
+//   ref_camera.im_width = ref_camera.im_width / 16
   const depths = await loadAllDepths(meta_data, baseUrl, layersIds)
   const [verts, faces, uv] = await tf_gen_planes(ref_camera.im_height, ref_camera.im_width)
   const faces_flat = faces.toInt().flatten().dataSync()
