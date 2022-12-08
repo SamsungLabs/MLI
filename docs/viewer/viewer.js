@@ -87,6 +87,7 @@ function setupRenderer(canvas, camera, scene) {
 
 function buildGeometry(verts, faces_flat, uv_flat, depths, ref_camera) {
   // Depth must be reversed to match the uv parametrization
+  depths = tf.image.resizeBilinear(depths, [ref_camera.im_height, ref_camera.im_width])
   const rev_depth = tf.reverse(depths.reshape([ref_camera.im_height, ref_camera.im_width]), axis=0).reshape([-1, 1])
   const v3 = ref_camera.pixel_to_world(verts.reshape([-1, 2]), rev_depth).reshape([ref_camera.im_height, ref_camera.im_width, 3])
   const positions = v3.flatten().dataSync()
