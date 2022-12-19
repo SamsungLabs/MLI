@@ -1,0 +1,7 @@
+      @inproceedings{Solovev2022simpli,
+                      author    = {Solovev, Pavel and Khakhulin, Taras and Korzhenkov, Denis},
+                      title     = {Self-improving Multiplane-to-layer Images for Novel View Synthesis},
+                      booktitle = {The IEEE Winter Conference on Applications of Computer Vision (WACV)},
+                      month = {January},
+                      year = {2023},
+      }
