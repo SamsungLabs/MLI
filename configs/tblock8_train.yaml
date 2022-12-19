@@ -8,6 +8,12 @@ opt_level: O0
 use_apex: True
 
 trainer: TrainerSIMPLI
+augmentations:
+  augs_mix:
+    -
+    kornia_aug: RandomMixUp
+    p: 0.9
+    lambda_val: [ 0, 0.4 ]
 
 clip_grad_norm: 20
 max_iter: &max_iter 1000000             # maximum number of training iterations
@@ -37,7 +43,7 @@ models:
     max_depth: 100
     min_depth: 1
     use_intersected_groups: True
-    num_layers: &num_layers 4
+    num_layers: &num_layers 8
     scale_feat_extractor: 1
     scale_lvl0: 0.25
     scale_lvl1: 0.5
@@ -90,7 +96,7 @@ models:
         architecture: ConvMLP
         input_dim: 16
         dims: [ 16, 8 ]
-        output_dim: 11 # num_surf // num_layers + 1
+        output_dim: 6 # num_surf // num_layers + 1
         activation: 'relu'
       rgba_decoder_lvl1:
         architecture: ConvMLP
@@ -171,3 +177,101 @@ schedulers:
   generator:
     type: ExponentialLR
     gamma: 0.999994
+
+
+
+# ========== DATASET OPTIONS ==========
+
+# common part
+
+dataset_commons:
+  <<: &dataset_commons
+    ref_cameras_number: 1
+    novel_cameras_number_per_ref: 4
+    relative_intrinsics: True
+    image_scale: 1.2
+
+dataset_sword_train:
+  <<: &dataset_sword_train
+    type: RealEstate2
+#    root: <Path to full SWORD dataset https://samsunglabs.github.io/StereoLayers/sword/>
+    dataset_file: dataset.csv
+    image_size: [ 360, 640 ]
+    max_len_sequence: 35
+    cameras_sample_mode: 'randomly'
+    set_reference_as_origin: False
+    init_cameras_number_per_ref: 2
+    transforms_params:
+      resize_scales: [ 1.0, 1.2, 1.3, 1.4, 1.5, 1.6 ]
+      num_cams_resolution_crop_lensq_weight:
+        - [ 2, [ 192, 384 ], [ 192, 384 ], 10, 1 ]
+        - [ 3, [ 176, 336 ], [ 176, 336 ], 20, 1 ]
+        - [ 4, [ 144, 288 ], [ 144, 288 ], 30, 4 ]
+        - [ 6, [ 128, 240 ], [ 128, 240 ], 45, 2 ]
+        - [ 8, [ 96, 192 ], [ 96, 192 ], 80, 1 ]
+      <<: *dataset_commons
+      scale_constant: 1.25
+
+dataset_ipad_val:
+  <<: &dataset_ipad_val
+    type: RealEstate2
+#    root: <Path to ipad sample from Small Test Data https://samsunglabs.github.io/StereoLayers/sword/>
+    dataset_file: dataset.csv
+    relative_intrinsics: True
+    image_size: [ 384, 624 ]
+    cameras_sample_mode: 'interpolation_only'
+    max_len_sequence: 25
+    scale_constant: 2.0
+    fix_seed: True
+    init_cameras_number_per_ref: 8
+    virtual_average_ref_extrinsics: True
+    ref_cameras_number: 1
+
+
+dataloaders:
+  train:
+    dataset:
+       type: JoinedDataset
+       weighted_sampling: True
+       weights: [1.0]
+       concatenated_datasets:
+         - <<: *dataset_sword_train
+    params:
+      shuffle: True
+      drop_last: False
+      num_workers: 0
+      batch_size: 1
+      collate_fn_type: without_seqs
+      pin_memory: True
+  vis:
+    dataset:
+      <<: *dataset_ipad_val
+      novel_cameras_number_per_ref: 1
+      virtual_average_ref_extrinsics: True
+      sample_first_nrow: 10
+    params:
+      shuffle: False
+      drop_last: True
+      num_workers: 1
+      batch_size: 1
+      pin_memory: True
+  val:
+    dataset:
+      <<: *dataset_ipad_val
+      novel_cameras_number_per_ref: 1
+    params:
+      shuffle: False
+      drop_last: False
+      num_workers: 1
+      batch_size: 1
+  render:
+    dataset:
+      <<: *dataset_ipad_val
+      novel_cameras_number_per_ref: 1
+      virtual_average_ref_extrinsics: True
+      fix_seed: True
+    params:
+      shuffle: False
+      drop_last: False
+      num_workers: 1
+      batch_size: 1
