@@ -42,7 +42,7 @@ export MPLCONFIGDIR=tmp
 
 SIMPLI model already in the repo. 
 
-## Train model with your dataset 
+## Train model with sword dataset 
 ```
 torchrun \
   --standalone \ # if all GPUs are on a single node
