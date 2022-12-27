@@ -52,7 +52,7 @@ def get_dataloader_from_params(params: dict,
                                use_horovod: bool = False,
                                ):
     """ Construct dataloader based on config. """
-    dataloader_config = params
+    dataloader_config = params['dataloaders']
     if name in dataloader_config:
         dataset_params = dataloader_config[name]['dataset']
         dataloader_params = dataloader_config[name]['params']
@@ -73,7 +73,6 @@ def get_dataloader_from_params(params: dict,
                                                                  num_samples=len(dset),
                                                                  replacement=True)
             dataloader_params['shuffle'] = False
-
         horovod_kwargs = {}
         if use_horovod:
             num_replicas = hvd.size()
