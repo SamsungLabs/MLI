@@ -47,6 +47,8 @@ def photometric_masked_loss(prediction: torch.Tensor,
                             multiplier: Optional[torch.Tensor] = None,
                             mode: str = 'l1',
                             eps: float = 1e-6,
+                            drop_zeros: bool = False,
+                            allow_different_size_of_gt_and_pred=False,
                             ) -> torch.Tensor:
     """
     Args:
@@ -60,7 +62,13 @@ def photometric_masked_loss(prediction: torch.Tensor,
     Returns:
         loss
     """
-    assert prediction.shape == target.shape
+    if allow_different_size_of_gt_and_pred:
+        assert prediction.shape[:2] == target.shape[:2], \
+            f'prediction.shape[:2] - {prediction.shape[:2]}, target.shape[:2] - {target.shape[:2]}'
+        if prediction.shape != target.shape:
+            target = F.interpolate(target, size=[prediction.shape[2], prediction.shape[3]])
+    else:
+        assert prediction.shape == target.shape
 
     if mode == 'l1':
         func = lambda x, y: torch.abs(x - y)
@@ -82,6 +90,20 @@ def photometric_masked_loss(prediction: torch.Tensor,
     else:
         mask = F.interpolate(mask.float(), size=target.shape[-2:], mode='bilinear')
         pixelwise = func(prediction, target) * mask
+
+        if drop_zeros:
+            mask_not_zeros = ~torch.all(torch.isclose(pixelwise, torch.zeros_like(pixelwise)).bool(), dim=1, keepdim=True)
+            mask_not_zeros = mask_not_zeros.detach()
+
+            if multiplier is None:
+                return torch.mean(
+                    torch.sum(pixelwise, dim=[-1, -2]) / mask_not_zeros.sum(dim=[-1, -2]).add(eps)
+                )
+            else:
+                return torch.mean(
+                    torch.sum(pixelwise * multiplier, dim=[-1, -2]) / mask_not_zeros.sum(dim=[-1, -2]).add(eps)
+                )
+                
         if multiplier is None:
             return torch.mean(
                 torch.sum(pixelwise, dim=[-1, -2]) / mask.sum(dim=[-1, -2]).add(eps)
