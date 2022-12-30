@@ -34,6 +34,7 @@ def main():
     parser.add_argument('--resume', action="store_true")
     parser.add_argument('--verbose', '-v', type=str, default='DEBUG', help="logging level")
     parser.add_argument('--device', '-d', type=str, default='cuda', help="type of the device")
+    parser.add_argument('--local_rank', default=0, type=int)
     opts = parser.parse_args()
 
     if 'LOCAL_RANK' in os.environ:
