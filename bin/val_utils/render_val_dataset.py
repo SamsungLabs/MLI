@@ -297,9 +297,9 @@ def main():
                         help='Path to checkpoints directory. If None extracted from config path')
     parser.add_argument('--iteration', type=int, default=None,
                         help='Iteration number. If None - gets the latest.')
-    parser.add_argument('--scene_scale_constant', type=float, default=1.0,
+    parser.add_argument('--scene-scale-constant', type=float, default=1.0,
                         help='scene_scale_constant.')
-    parser.add_argument('--skip_each_ith_frame', type=int, default=0, help='skip each')
+    parser.add_argument('--skip-each-ith-frame', type=int, default=0, help='skip each')
     parser.add_argument('--use-ema', action='store_true', help='Use stereo as input.')
     parser.add_argument('--save-mpi', action='store_true',
                         help='Save mpi binary file.')
