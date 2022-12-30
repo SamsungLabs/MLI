@@ -37,11 +37,6 @@ def main():
     parser.add_argument('--local_rank', default=0, type=int)
     opts = parser.parse_args()
 
-    if 'LOCAL_RANK' in os.environ:
-        local_rank = int(os.environ['LOCAL_RANK'])
-    else:
-        local_rank = 0
-
     n_gpu = 1
     if 'WORLD_SIZE' in os.environ:
         n_gpu = int(os.environ['WORLD_SIZE'])
@@ -60,8 +55,7 @@ def main():
 
     # == FOR DISTRIBUTED ==
     # Set the device according to local_rank.
-    device_rank = local_rank
-    #local_rank = device_rank = opts.local_rank
+    local_rank = device_rank = opts.local_rank
     if use_horovod:
         hvd.init()
         device_rank = hvd.rank()
