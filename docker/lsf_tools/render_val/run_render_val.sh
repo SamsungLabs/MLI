@@ -11,4 +11,4 @@ LSB_CONTAINER_IMAGE=t.khakh/psina3d NV_GPU=${NV_GPU} nvidia-docker container run
     airuhead01:5000/t.khakh/psina3d:latest \
     bash -c "export PYTHONPATH=/home/Develop/MLI; export HOME=/home/Develop/MLI
     cd /home/Develop/MLI; pip install numpy==1.20.2;
-    python bin/val_utils/render_val_dataset.py --config ${1} --val_dataset ${2} --iteration ${3} --scene_scale_constant ${4} --output_path ${5}"
+    python bin/val_utils/render_val_dataset.py --config ${1} --val-dataset ${2} --iteration ${3} --scene-scale-constant ${4} --output-path ${5}"
