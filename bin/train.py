@@ -34,8 +34,12 @@ def main():
     parser.add_argument('--resume', action="store_true")
     parser.add_argument('--verbose', '-v', type=str, default='DEBUG', help="logging level")
     parser.add_argument('--device', '-d', type=str, default='cuda', help="type of the device")
-    parser.add_argument('--local_rank', default=0, type=int)
     opts = parser.parse_args()
+
+    if 'LOCAL_RANK' in os.environ:
+        local_rank = int(os.environ['LOCAL_RANK'])
+    else:
+        local_rank = 0
 
     n_gpu = 1
     if 'WORLD_SIZE' in os.environ:
@@ -55,7 +59,8 @@ def main():
 
     # == FOR DISTRIBUTED ==
     # Set the device according to local_rank.
-    local_rank = device_rank = opts.local_rank
+    device_rank = local_rank
+    #local_rank = device_rank = opts.local_rank
     if use_horovod:
         hvd.init()
         device_rank = hvd.rank()
@@ -135,7 +140,6 @@ def main():
     if base_seed is not None:
         base_seed = base_seed * (device_rank + 1)
     train_dataloader = get_dataloader_from_params(config, 'train', base_seed=base_seed, use_horovod=use_horovod)
-
     if device_rank == 0:
         vis_dataloader = get_dataloader_from_params(config, 'vis', base_seed=base_seed, use_horovod=False)
         val_dataloader = get_dataloader_from_params(config, 'val', base_seed=base_seed, use_horovod=False)
@@ -219,7 +223,7 @@ def main():
             if iteration >= config['max_iter']:
                 if device_rank == 0:
                     train_writer.close()
-                logger.info('Finish training')
+                    logger.info('Finish training')
                 sys.exit()
 
 
