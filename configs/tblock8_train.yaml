@@ -191,33 +191,37 @@ dataset_commons:
     relative_intrinsics: True
     image_scale: 1.2
 
-dataset_sword_train:
-  <<: &dataset_sword_train
-    type: RealEstate2
-#    root: <Path to full SWORD dataset https://samsunglabs.github.io/StereoLayers/sword/>
-    dataset_file: dataset.csv
-    image_size: [ 360, 640 ]
-    max_len_sequence: 35
-    cameras_sample_mode: 'randomly'
-    set_reference_as_origin: False
-    init_cameras_number_per_ref: 2
+dataset_commons_sword_train:
+  <<: &dataset_commons_sword_train
     transforms_params:
-      resize_scales: [ 1.0, 1.2, 1.3, 1.4, 1.5, 1.6 ]
+      resize_scales: [1.0, 1.2, 1.3, 1.4, 1.5, 1.6]
       num_cams_resolution_crop_lensq_weight:
         - [ 2, [ 192, 384 ], [ 192, 384 ], 10, 1 ]
         - [ 3, [ 176, 336 ], [ 176, 336 ], 20, 1 ]
         - [ 4, [ 144, 288 ], [ 144, 288 ], 30, 4 ]
         - [ 6, [ 128, 240 ], [ 128, 240 ], 45, 2 ]
         - [ 8, [ 96, 192 ], [ 96, 192 ], 80, 1 ]
-      <<: *dataset_commons
-      scale_constant: 1.25
+    <<: *dataset_commons
+    scale_constant: 1.25
+
+dataset_sword_train:
+  <<: &dataset_sword_train
+    type: RealEstate2
+#    root: <Path to full SWORD dataset https://samsunglabs.github.io/StereoLayers/sword/>
+    dataset_file: sorted_train.csv
+    image_size: [ 360, 640 ]
+    max_len_sequence: 35
+    cameras_sample_mode: 'randomly'
+    set_reference_as_origin: False
+    init_cameras_number_per_ref: 2
+    <<: *dataset_commons_sword_train
+
 
 dataset_ipad_val:
   <<: &dataset_ipad_val
     type: RealEstate2
 #    root: <Path to ipad sample from Small Test Data https://samsunglabs.github.io/StereoLayers/sword/>
     dataset_file: dataset.csv
-    relative_intrinsics: True
     image_size: [ 384, 624 ]
     cameras_sample_mode: 'interpolation_only'
     max_len_sequence: 25
@@ -226,7 +230,8 @@ dataset_ipad_val:
     init_cameras_number_per_ref: 8
     virtual_average_ref_extrinsics: True
     ref_cameras_number: 1
-
+    novel_cameras_number_per_ref: 4
+    relative_intrinsics: True
 
 dataloaders:
   train:
