@@ -171,6 +171,32 @@ async function startMainDisplay(inputPath, canvasName, idScene='scene-viewer') {
   setupRenderer(canvas, camera, scene);
 }
 
+
+async function startMainDisplayPlain(inputPath, canvasName, idScene='scene-viewer') {
+  const canvas = document.getElementById(canvasName);
+  const baseUrl = inputPath
+  const num_layers = 4;
+  const layersIds = [...Array(num_layers).keys()].map(i => String(i).padStart(2, '0'))
+//  const baseUrl = document.getElementById('base-path').value;
+  const meta_data = await fetch(`${baseUrl}/meta.json`).then(result => result.json())
+  const ref_camera = await ProjectiveCamera.from_meta(meta_data)
+  const depths = await loadAllDepths(meta_data, baseUrl, layersIds)
+  const [verts, faces, uv] = await tf_gen_planes(ref_camera.im_height, ref_camera.im_width)
+  const faces_flat = faces.toInt().flatten().dataSync()
+  const uv_flat = uv.flatten().dataSync()
+
+  const geometries = depths.map(depth => buildGeometry(verts, faces_flat, uv_flat, depth, ref_camera))
+  const materials = loadAllTextures(baseUrl, layersIds).map(simpleTextureMaterial)
+  const scene = buildScene(geometries, materials);
+//  const camera = setupCamera(canvas)
+  const [camera, handler] = setupCamera(canvas);
+  handler.changleHandler("wonder")
+//  const view = document.getElementById('scene-viewer');
+//  camera = new WonderCamera(camera, view)
+//  const camera = setupNeutralHoverCamera(canvas, idScene);
+  setupRenderer(canvas, camera, scene);
+}
+
 function setStatsDsiplay() {
   panels = stats.dom.children;
   for (canvas of panels) {
