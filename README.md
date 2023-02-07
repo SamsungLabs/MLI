@@ -35,11 +35,6 @@ export MPLCONFIGDIR=tmp
 ```
 
 
-## Download pretrained StereoLayers model
-```sh
-./pretrained/download.sh
-```
-
 SIMPLI model already in the repo. 
 
 ## Train model with sword dataset 
