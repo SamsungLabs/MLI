@@ -35,12 +35,21 @@ export MPLCONFIGDIR=tmp
 ```
 
 
-## Download pretrained StereoLayers model
-```sh
-./pretrained/download.sh
-```
-
 SIMPLI model already in the repo. 
+
+## Train model with sword dataset 
+dataset link - https://samsunglabs.github.io/StereoLayers/sword/ 
+You need to load the full dataset as the small test data. 
+Then set the correct paths to data in the config file. 
+
+```
+torchrun \
+  --standalone \ # if all GPUs are on a single node
+  --nproc_per_node=1 \ # set number of GPUs here
+  bin/train.py \
+  --config configs/tblock4_train.yaml \
+  --output-path train_outputs
+```  
 
 ## Render predefined Dataset
 ```

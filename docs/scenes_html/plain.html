@@ -1,0 +1,55 @@
+ <!-- Bootstrap core CSS -->
+  <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="static/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="static/css/landing-page.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="../static/css/bulma.min.css">
+  <link rel="stylesheet" href="../static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="../static/css/bulma-slider.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="../viewer/threejs_bin.js"></script>
+  <script src="../viewer/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
+  <script src="https://mrdoob.github.io/stats.js/build/stats.min.js"></script>
+  <script src="../viewer/numjs.min.js"></script>
+  <script src="../viewer/utils.js"></script>
+  <script src="../viewer/camera_viewer.js"></script>
+  <script src="../viewer/materials.js"></script>
+  <script src="../viewer/viewer.js"></script>
+
+    <div class="hero-body">
+
+
+    <div class="container">
+
+      <div class="row is-centered">
+      <div class="main-viewer"  style="padding-left: 15%;">
+     <div class="viewer-container">
+        <div id="scene-viewer" class="scene-lf">
+         <canvas id="viewer-canvas" class="viewer-canvas" width="384" height="224">
+            <param id="base-path" value="../scenes/3/">
+            <div id="display-main"></div>
+                 <script>
+                document.getElementById("display-main").innerHTML = startMainDisplayPlain("../scenes/33/", "viewer-canvas");
+              </script>
+
+         </canvas>
+        </div>
+      </div>
+
+      </div>
+
+      </div>
+      </div>
+      </div>

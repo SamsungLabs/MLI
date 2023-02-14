@@ -9,6 +9,6 @@ LSB_CONTAINER_IMAGE=t.khakh/psina3d NV_GPU=${NV_GPU} nvidia-docker container run
     -v /Vol0/:/Vol0/ \
     -v ~/Develop/MLI/:/home/Develop/MLI/  \
     airuhead01:5000/t.khakh/psina3d:latest \
-    bash -c "export PYTHONPATH=/home/Develop/MLI; export HOME=/home/Develop/MLI
-    cd /home/Develop/MLI; pip install numpy==1.20.2;
-    python bin/val_utils/render_val_dataset.py --config ${1} --val-dataset ${2} --iteration ${3} --scene-scale-constant ${4} --output-path ${5}"
+    bash -c "export PYTHONPATH=/home/Develop/MLI; export HOME=/home/Develop/MLI; pip install numpy==1.20.2;
+    cd /home/Develop/MLI;  pip install numpy==1.20.2;
+    python -m torch.distributed.launch --nproc_per_node=${3:-1} --master_port=1234 bin/train.py --config ${1} --resume --output-path ${2:-.}"
