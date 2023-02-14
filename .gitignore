@@ -10,3 +10,5 @@ tmp
 pretrained/*
 !pretrained/download.sh
 nvsdocker.sh
+makedocker.sh 
+train.sh
