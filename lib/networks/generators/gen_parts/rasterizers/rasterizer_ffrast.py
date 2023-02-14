@@ -1,7 +1,7 @@
 __all__ = ['RasterizerFFrast',
            'Fragments']
 
-from typing import Tuple, NamedTuple
+from typing import Optional, Tuple, NamedTuple
 
 import torch
 from torch import nn
@@ -20,7 +20,8 @@ class RasterizerFFrast(nn.Module):
             image_size: int = 256,
             scale: int = 100,
             faces_per_pixel: int = 8,
-            custom_resolution: Tuple = None,
+            custom_resolution: Optional[Tuple] = None,
+            cuda_ctx: bool = True,
     ):
         """
 
@@ -38,12 +39,16 @@ class RasterizerFFrast(nn.Module):
         else:
             self.img_resolution = custom_resolution
         self.faces_per_pixel = faces_per_pixel
-        self.glctx = dr.RasterizeGLContext()
+
+        if cuda_ctx:
+            self.glctx = dr.RasterizeCudaContext()
+        else:
+            self.glctx = dr.RasterizeGLContext()
 
     def forward(self,
                 verts: torch.Tensor,
                 faces: torch.Tensor,
-                custom_resolution: Tuple[int, int]=None,
+                custom_resolution: Optional[Tuple[int, int]]=None,
                 ) -> dict:
         """
 
