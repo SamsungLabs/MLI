@@ -51,12 +51,26 @@ torchrun \
   --output-path train_outputs
 ```  
 
+## Prepare validation data
+
+`render_val_dataset.py` script below expects a different data format (check out `lib/datasets/val_dataset.py` for details). First, process your data with configs from `configs/val_data`: `sword_val.yaml` is for rendering the exact copies of the validation dataset, `sword_val_spiral.yaml` is for generating views along novel trajectories. Possible trajectories are listed in `lib/modules/cameras/trajectory_generators.py`.
+The following script prepares data for validation format.
+
+```
+python bin/val_utils/generate_val_dataset.py \
+        --config configs/val_data/sword_val_spiral.yaml \
+        --output-path sample_val_spiral
+```
+
 ## Render predefined Dataset
+
+Weights for rendering the model must be in `checkpoints` subfolder of the same folder as the config.
+
 ```
 python bin/val_utils/render_val_dataset.py \
        --config pretrained/stereo_layers/stereo_layers.yaml \
-       --val-dataset datasets/sword_sample/ \
-       --iteration 400000 \
+       --val-dataset datasets/sword_sample/ \ #folder of the data in validation format
+       --iteration 400000 \ #iteration of the checkpoint, must be in its file name
        --output-path outputs
 ```
 
@@ -65,7 +79,7 @@ python bin/val_utils/render_val_dataset.py \
 python bin/render.py \
        --config pretrained/stereo_layers/stereo_layers.yaml \
        --checkpoints-path pretrained/stereo_layers/checkpoints \
-       --iteration 400000 \
+       --iteration 400000 \ 
        --output-path outputs
 ```
 
