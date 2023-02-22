@@ -1,7 +1,7 @@
 __all__ = ['RendererMeshLayers']
 
 import logging
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Optional
 
 import torch
 from torch import nn
@@ -29,7 +29,7 @@ class RendererMeshLayers(nn.Module):
                              view_cameras: CameraPytorch3d,
                              verts: torch.Tensor,
                              faces: torch.Tensor,
-                             ) -> Tuple[torch.Tensor, torch.Tensor]:
+                             ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         """
         Prepare mesh layers for opengl format and batchify for ffrast rasterizer.
         """
@@ -45,7 +45,7 @@ class RendererMeshLayers(nn.Module):
                    verts: torch.Tensor,
                    faces: torch.Tensor,
                    batch_size: int,
-                   custom_resolution: Tuple[int, int],
+                   custom_resolution: Optional[Tuple[int, int]],
                    ):
         fragments_dict = self.rasterizer(verts, faces[0], custom_resolution)
         fragments_dict['pix_to_face'] = fragments_dict['pix_to_face'].long()
@@ -68,7 +68,7 @@ class RendererMeshLayers(nn.Module):
                 view_cameras: CameraPytorch3d,
                 verts: torch.Tensor,
                 faces: torch.Tensor,
-                custom_resolution: Tuple[int, int] = None,
+                custom_resolution: Optional[Tuple[int, int]] = None,
                 **texture_kwargs
                 ) -> dict:
         """
@@ -108,7 +108,7 @@ class RendererMeshLayers(nn.Module):
                   view_cameras: CameraPytorch3d,
                   verts: torch.Tensor,
                   faces: torch.Tensor,
-                  custom_resolution: Tuple[int, int]=None,
+                  custom_resolution: Optional[Tuple[int, int]]=None,
                   ) -> Fragments:
         """
         Method for rasterizing mesh, without applying shaders.

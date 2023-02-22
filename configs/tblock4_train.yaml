@@ -11,9 +11,9 @@ trainer: TrainerSIMPLI
 augmentations:
   augs_mix:
     -
-    kornia_aug: RandomMixUp
-    p: 0.9
-    lambda_val: [ 0, 0.4 ]
+      kornia_aug: RandomMixUp
+      p: 0.9
+      lambda_val: [ 0, 0.4 ]
 
 clip_grad_norm: 20
 max_iter: &max_iter 1000000             # maximum number of training iterations
@@ -23,7 +23,7 @@ patch_size: 128
 weights:
   generator:
     l1: 1.
-    perceptual: 10.
+    perceptual: 0
     intermediate_loss_0_l1: 1.
     intermediate_loss_1_l1: 1.
     intermediate_loss_2_l1: 1.
@@ -195,7 +195,8 @@ dataset_sword_train:
   <<: &dataset_sword_train
     type: RealEstate2
 #    root: <Path to full SWORD dataset https://samsunglabs.github.io/StereoLayers/sword/>
-    dataset_file: dataset.csv
+    root: /home/Develop/datasets/Turkish_final_full
+    dataset_file: sorted_train.csv
     image_size: [ 360, 640 ]
     max_len_sequence: 35
     cameras_sample_mode: 'randomly'
@@ -216,6 +217,7 @@ dataset_ipad_val:
   <<: &dataset_ipad_val
     type: RealEstate2
 #    root: <Path to ipad sample from Small Test Data https://samsunglabs.github.io/StereoLayers/sword/>
+    root: /home/Develop/datasets/sword/AdditionalScenes/partb_ipad
     dataset_file: dataset.csv
     relative_intrinsics: True
     image_size: [ 384, 624 ]

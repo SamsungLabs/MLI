@@ -35,7 +35,7 @@ class TBlock(nn.Module):
                  max_distance: float = 100.,
                  interpolate_input_feats: bool = False,
                  agg_with_mean_var: bool = True,
-                 agg_processor_hidden_size: int = None,
+                 agg_processor_hidden_size: Optional[int] = None,
                  aggregation_with_weights: bool = False,
                  ):
         super().__init__()
@@ -95,11 +95,11 @@ class TBlock(nn.Module):
                 source_features,
                 source_cameras: CameraMultiple,
                 reference_cameras: CameraMultiple,
-                input_surfaces: torch.Tensor = None,
-                output_surfaces_resolution: Tuple[int, int] = None,
-                feats_resolution: Tuple[int, int] = None,
-                layered_depth: torch.Tensor = None,
-                source_weights: torch.Tensor = None,
+                input_surfaces: Optional[torch.Tensor] = None,
+                output_surfaces_resolution: Optional[Tuple[int, int]] = None,
+                feats_resolution: Optional[Tuple[int, int]] = None,
+                layered_depth: Optional[torch.Tensor] = None,
+                source_weights: Optional[torch.Tensor] = None,
                 ) -> Union[torch.Tensor, Tuple[torch.Tensor, torch.Tensor]]:
 
         """
@@ -134,7 +134,6 @@ class TBlock(nn.Module):
 
         h, w = output_surfaces_resolution
 
-
         ref_pixel_coords = get_grid(batch_size=batch_size,
                                     height=h,
                                     width=w,
@@ -156,7 +155,7 @@ class TBlock(nn.Module):
         else:
             input_surfaces_feats = torch.zeros([batch_size * h * w, self.num_surfaces,
                                                 self.input_surfaces_feats_size],
-                                   device=source_features.device)
+                                                device=source_features.device)
             input_surfaces_feats = self.position_encoder(input_surfaces_feats)
             input_surfaces_feats = input_surfaces_feats.reshape(batch_size, h, w, self.num_surfaces,
                                                                 self.input_surfaces_feats_size).permute(0, 3, 4, 1, 2)
@@ -172,7 +171,7 @@ class TBlock(nn.Module):
         else:
             surfaces_indices = range(self.num_surfaces)
             new_surfaces_feats = torch.empty([batch_size, self.num_surfaces, self.output_surfaces_feats_size, h, w],
-                                                device=source_features.device)
+                                              device=source_features.device)
 
         for surface_idx in surfaces_indices:
             unprojected_feats, mask, source_vectors_descriptors = \
@@ -215,7 +214,7 @@ class TBlock(nn.Module):
                 surfaces_state.append(surfaces_mean_var.squeeze(1))
 
             if self.attention_agg:
-                feats = torch.cat([unprojected_feats, weight], axis=3)
+                feats = torch.cat([unprojected_feats, weight], dim=3)
                 feats = feats.permute(0, 2, 4, 5, 1, 3)
                 _, num_surfaces_curr, _, _, _, _ = feats.shape
                 #  B * num_surfaces * H * W x n_source x C + 1

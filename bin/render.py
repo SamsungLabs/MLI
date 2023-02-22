@@ -37,7 +37,7 @@ def main():
     video_writer = VideoWriter(output_filename)
 
     # Setup loaders
-    dataloader = get_dataloader_from_params(config['dataloaders'], 'render')
+    dataloader = get_dataloader_from_params(config, 'render')
     # dataloader.dataset.save_krt(os.path.join(opts.output_path, model_name, 'virtual_KRT.txt'))
 
     if config['models'].get('all_cameras') is not None:

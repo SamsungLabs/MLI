@@ -1,0 +1,44 @@
+num_epoch: 1
+novel_mode: 'virtual_trajectory'
+resolution: &resolution [384, 512]
+
+virtual_trajectory:
+  input_cams: 'initial'
+  resolution: *resolution
+  pose_processor:
+    #func: first_cam
+    func: average_cam
+    params: {}
+  trajectory_gen:
+    func: generate_spiral_poses_with_focus
+    params:
+      offset: 0.1
+      min_depth: 1
+      max_depth: 15
+      num_frames: 100
+
+dataset_val:
+  <<: &dataset_val
+    type: RealEstate2
+    root: /home/Develop/datasets/sword/AdditionalScenes/partb_ipad
+    dataset_file: dataset.csv
+    relative_intrinsics: True
+    cameras_sample_mode: 'base_same'
+    image_size: *resolution
+    max_len_sequence: 50
+    scale_constant: 1
+    fix_seed: True
+    ref_cameras_number: 1
+    init_cameras_number_per_ref: 5
+    novel_cameras_number_per_ref: 8
+    virtual_average_ref_extrinsics: True
+
+
+dataloaders:
+  val:
+    dataset:
+      <<: *dataset_val
+    params:
+      shuffle: True
+      drop_last: False
+      num_workers: 1
