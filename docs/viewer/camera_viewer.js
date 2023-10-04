@@ -154,3 +154,36 @@ class WonderCamera extends CameraTypeBase {
         clearInterval(this.timer);
     }
 }
+
+class VRCamera {
+    constructor(renderer) {
+        this.renderer = renderer
+        this.renderer.xr.enabled = true
+        this.renderer.xr.setReferenceSpaceType('local')
+        this.currentSession = null
+    }
+
+    toggleVR() {
+        if (this.currentSession === null) {
+            const sessionInit = {optionalFeatures: ['local-floor']}
+            navigator.xr.requestSession('immersive-vr', sessionInit).then(this.onSessionStarted.bind(this))
+        } else {
+            this.currentSession.end()
+        }
+    }
+
+    async onSessionStarted(session) {
+        session.addEventListener('end', this.onSessionEnded.bind(this))
+        await this.renderer.xr.setSession(session)
+        this.currentSession = session
+    }
+
+    onSessionEnded( /*event*/) {
+        this.currentSession.removeEventListener('end', this.onSessionEnded)
+        this.currentSession = null
+    }
+
+    static async isVRAvailable() {
+        return 'xr' in navigator && await navigator.xr.isSessionSupported('immersive-vr')
+    }
+}
