@@ -84,6 +84,7 @@ function setupRenderer(canvas, camera, scene) {
     renderer.render(scene, camera);
     stats.update();
   });
+  return renderer
 }
 
 function buildGeometry(verts, faces_flat, uv_flat, depths, ref_camera) {
@@ -93,7 +94,7 @@ function buildGeometry(verts, faces_flat, uv_flat, depths, ref_camera) {
   const v3 = ref_camera.pixel_to_world(verts.reshape([-1, 2]), rev_depth).reshape([ref_camera.im_height, ref_camera.im_width, 3])
   const positions = v3.flatten().dataSync()
   const geometry = new THREE.BufferGeometry();
- 
+
   geometry.setIndex(Array.from(faces_flat));
   geometry.setAttribute('position', new THREE.BufferAttribute( positions, 3 ) );
   geometry.setAttribute('uv', new THREE.BufferAttribute(uv_flat, 2));
@@ -140,11 +141,13 @@ async function startDisplay(inputPath, num_layers=4) {
   const scene = buildScene(geometries, materials);
 
   const [camera, handler] = setupCamera(canvas);
-  
+
   setCameraControlEvents(handler);
   setViewModeEvents(scene.children, textures_loaded);
   setStatsDsiplay();
-  setupRenderer(canvas, camera, scene);
+  const renderer = setupRenderer(canvas, camera, scene);
+
+  setupCameraVR(renderer)
 }
 
 
@@ -211,6 +214,15 @@ function setCameraControlEvents(handler) {
   document.getElementById("dragButton").addEventListener("click", (e) => handler.changleHandler("drag"));
   document.getElementById("swayButton").addEventListener("click", (e) => handler.changleHandler("sway"));
   document.getElementById("wonderButton").addEventListener("click", (e) => handler.changleHandler("wonder"));
+}
+
+function setupCameraVR(renderer) {
+  // this could be setup in changleHandler, needs a few modification to gives renderer to CameraViewHandler
+  // and some refactoring
+  const elVrBtn = document.getElementById("vrButton")
+  VRCamera.isVRAvailable().then(isAvailable => elVrBtn.disabled = !isAvailable)
+  const vrCamera = new VRCamera(renderer)
+  elVrBtn.addEventListener("click", e => vrCamera.toggleVR())
 }
 
 function setViewModeEvents(meshes, textures_loaded) {
